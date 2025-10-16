@@ -1,0 +1,112 @@
+/* ---------- Root / Background ---------- */
+.border-pane {
+    -fx-background-color:
+        linear-gradient(to bottom right, #0f172a, #111827);
+}
+
+/* ---------- Card ---------- */
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 18, 0.12, 0, 6);
+}
+
+/* ---------- Title ---------- */
+.title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+    -fx-alignment: center;
+}
+
+/* ---------- Error ---------- */
+.error {
+    -fx-text-fill: #e11d48;     /* rose-600 */
+    -fx-font-weight: 600;
+    -fx-alignment: center;
+}
+
+/* ---------- Inputs ---------- */
+.text-field, .password-field {
+    -fx-background-radius: 10;
+    -fx-background-color: #f3f4f6;
+    -fx-padding: 10 12;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10;
+    -fx-prompt-text-fill: #9ca3af;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #3b82f6;  /* blue-500 */
+    -fx-border-width: 1.2;
+}
+/*toggle button*/
+/* ---------- Toggle Button (same look as primary) ---------- */
+.toggle-button.primary {
+    -fx-background-color: #2563eb;        /* same blue */
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-background-radius: 12;
+    -fx-padding: 10 14;
+}
+
+/* Hover effect (same as primary hover) */
+.toggle-button.primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+/* Pressed effect (same as primary pressed) */
+.toggle-button.primary:pressed {
+    -fx-background-color: #1e40af;
+}
+
+/* When the toggle is ON (selected) */
+.toggle-button.primary:selected {
+    -fx-background-color: #1e40af;        /* slightly darker to show active */
+    -fx-text-fill: #ffffff;
+}
+
+/* Optional: focus ring when selected */
+.toggle-button.primary:selected:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 1.2;
+    -fx-border-radius: 12;
+}
+
+/* Optional: animated smooth transition */
+.toggle-button.primary {
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+/* ---------- Buttons ---------- */
+
+.button.primary {
+    -fx-background-color: #2563eb; /* blue-600 */
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-background-radius: 12;
+    -fx-padding: 10 14;
+}
+.button.primary:hover {
+    -fx-background-color: #1d4ed8; /* blue-700 */
+}
+.button.primary:pressed {
+    -fx-background-color: #1e40af; /* blue-800 */
+}
+
+/* Link-style button for “Sign up” */
+.button.link-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2563eb;
+    -fx-padding: 0 2;
+    -fx-font-weight: 700;
+}
+.button.link-button:hover {
+    -fx-underline: true;
+}
+
+/* Optional: labels */
+.label {
+    -fx-text-fill: #111827;
+}

@@ -15,6 +15,8 @@ public class Main extends Application {
         Scene scene = new Scene(loader.load(), 420, 260);
         stage.setTitle("Login • Library");
         stage.setScene(scene);
+        stage.setMinWidth(550);
+        stage.setMinHeight(450);
         stage.show();
     }
 
