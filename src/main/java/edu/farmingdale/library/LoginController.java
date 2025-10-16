@@ -1,5 +1,10 @@
 package edu.farmingdale.library;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -33,8 +38,11 @@ public class LoginController {
 
     }
 
-    @FXML private void signUp(){
-
+    @FXML
+    private void signUp() throws IOException {
+        Parent newRoot = FXMLLoader.load(getClass().getResource("/edu/farmingdale/library/sign-up-screen.fxml"));
+        Scene scene = loginButton.getScene();
+        scene.setRoot(newRoot);
     }
 
 }

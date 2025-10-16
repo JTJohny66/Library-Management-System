@@ -12,11 +12,11 @@ public class Main extends Application {
 
         FXMLLoader loader =
                 new FXMLLoader(Main.class.getResource("/edu/farmingdale/library/login-screen.fxml"));
-        Scene scene = new Scene(loader.load(), 420, 260);
+        Scene loginScene = new Scene(loader.load(), 420, 260);
         stage.setTitle("Login • Library");
-        stage.setScene(scene);
+        stage.setScene(loginScene);
         stage.setMinWidth(550);
-        stage.setMinHeight(450);
+        stage.setMinHeight(550);
         stage.show();
     }
 

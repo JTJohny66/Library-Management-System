@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.ScrollPane?>
+<BorderPane prefHeight="600.0" prefWidth="900.0"
+            stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.farmingdale.library.SignUpController">
+
+    <!-- Centered card -->
+    <center>
+        <VBox alignment="CENTER" spacing="18.0">
+            <VBox alignment="CENTER_LEFT"
+                  maxWidth="520.0"
+                  spacing="16.0"
+                  styleClass="card">
+
+                <padding>
+                    <Insets top="28" right="28" bottom="28" left="28"/>
+                </padding>
+
+                <!-- Title -->
+                <Label text="Farmingdale Library — Create Account"
+                       styleClass="title"
+                       maxWidth="Infinity"/>
+
+                <!-- Error (hidden by default) -->
+                <Label fx:id="errorLabel"
+                       text="Please fix the highlighted fields"
+                       visible="false"
+                       styleClass="error"
+                       maxWidth="Infinity"/>
+
+                <!-- Form -->
+                <GridPane hgap="14" vgap="12" maxWidth="Infinity">
+                    <columnConstraints>
+                        <!-- labels -->
+                        <ColumnConstraints halignment="RIGHT"
+                                           prefWidth="114.0" minWidth="114.0" maxWidth="135.0"/>
+                        <!-- inputs -->
+                        <ColumnConstraints hgrow="ALWAYS"
+                                           prefWidth="243.5" minWidth="180.5" maxWidth="268.5"/>
+                    </columnConstraints>
+
+                    <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                    </rowConstraints>
+
+                    <children>
+                        <!-- Full Name -->
+                        <Label text="Full Name" GridPane.rowIndex="0"/>
+                        <TextField fx:id="fullNameField"
+                                   promptText="e.g., Jordan Smith"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <!-- Email -->
+                        <Label text="Email" GridPane.rowIndex="1"/>
+                        <TextField fx:id="emailField"
+                                   promptText="you@example.edu"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <!-- Student ID (optional) -->
+                        <Label text="Student ID" GridPane.rowIndex="2"/>
+                        <TextField fx:id="studentIdField"
+                                   promptText="(optional)"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                        <!-- Password -->
+                        <Label text="Password" GridPane.rowIndex="3"/>
+                        <PasswordField fx:id="passwordField"
+                                       promptText="Create a password"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                        <!-- Confirm Password -->
+                        <Label text="Confirm Password" GridPane.rowIndex="4"/>
+                        <PasswordField fx:id="confirmPasswordField"
+                                       promptText="Re-enter password"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                        <!-- Terms checkbox (spans input column) -->
+                        <CheckBox fx:id="termsCheckBox"
+                                  text="I agree to the library’s terms of use and policies"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                    </children>
+                </GridPane>
+
+                <!-- Sign Up button -->
+                <Button fx:id="signUpButton"
+                        text="Sign Up"
+                        onAction="#createAccount"
+                        styleClass="primary"
+                        prefHeight="40.0"
+                        maxWidth="Infinity"/>
+
+                <!-- Back to login -->
+                <HBox alignment="CENTER" spacing="8.0" maxWidth="Infinity">
+                    <Label text="Already have an account?"/>
+                    <Button fx:id="backToLoginButton"
+                            text="Log in"
+                            styleClass="link-button"
+                            onAction="#goToLogin"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+
+    <!-- Padding around the card -->
+    <padding>
+        <Insets top="24" right="24" bottom="24" left="24"/>
+    </padding>
+</BorderPane>
