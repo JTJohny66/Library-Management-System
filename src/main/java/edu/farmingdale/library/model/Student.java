@@ -1,6 +1,5 @@
-package edu.farmingdale.library;
+package edu.farmingdale.library.model;
 
-import java.util.Collections;
 import java.util.HashSet;
 
 public class Student {

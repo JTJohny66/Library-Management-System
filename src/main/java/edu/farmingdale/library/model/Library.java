@@ -1,4 +1,4 @@
-package edu.farmingdale.library;
+package edu.farmingdale.library.model;
 
 import java.time.LocalDate;
 import java.util.*;

@@ -1,12 +1,13 @@
-package edu.farmingdale.library;
+package edu.farmingdale.library.controllers;
 
+import edu.farmingdale.library.model.Library;
+import edu.farmingdale.library.model.Student;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
