@@ -28,20 +28,114 @@ public class SignUpController {
     @FXML private Button backToLoginButton;
     private boolean fullscreen;
 
-    // Called when user clicks "Sign Up"
+
     @FXML
     private void createAccount() {
-        // TODO: Add sign-up validation and account creation logic here
-        System.out.println("Create account button clicked");
+
+        if (fullNameField.getText().isEmpty() || emailField.getText().isEmpty()
+                || passwordField.getText().isEmpty() || confirmPasswordField.getText().isEmpty()) {
+            errorLabel.setText("Please fill all fields.");
+            errorLabel.setVisible(true);
+            return;
+        }
+
+        if (!nameIsValid(fullNameField.getText())) {
+            errorLabel.setText("Please enter a first and last name.");
+            errorLabel.setVisible(true);
+            return;
+        }
+
+        if (!emailIsValid(fullNameField.getText(), emailField.getText())) {
+            errorLabel.setText("Must use personal farmingdale.edu Email.");
+            errorLabel.setVisible(true);
+            return;
+        }
+
+        if (!termsCheckBox.isSelected()) {
+            errorLabel.setText("Please accept terms and conditions.");
+            errorLabel.setVisible(true);
+            return;
+        }
+
+        if (!passwordField.getText().equals(confirmPasswordField.getText())) {
+            errorLabel.setText("Passwords do not match.");
+            errorLabel.setVisible(true);
+            return;
+        }
+
+        if (!includesSigns(passwordField.getText())) {
+            errorLabel.setText("Password must contain a symbol, number, uppercase, and lowercase.");
+            errorLabel.setVisible(true);
+            return;
+        }
+
+        if (Library.getInstance().emailExists(emailField.getText())) {
+            errorLabel.setText("Email already exists.");
+            errorLabel.setVisible(true);
+            return;
+        }
+
+        // ✅ Passed all checks → Create student
+        String fullName = fullNameField.getText().trim();
+        String[] parts = fullName.split("\\s+");
+        String firstName = parts[0];
+        String lastName = parts[parts.length - 1];
+
+        Library.getInstance().addStudent(
+                new Student(passwordField.getText(), emailField.getText(), lastName, firstName)
+        );
+
+        errorLabel.setVisible(false);
+        System.out.println("✅ Account Created Successfully!");
     }
 
-    // Called when user clicks "Log in"
+
+    @FXML
+    private void updateCheck(){
+        errorLabel.setVisible(false);
+    }
+
+    //changes schene root to login
     @FXML
     private void goToLogin() throws IOException {
         Parent newRoot = FXMLLoader.load(getClass().getResource("/edu/farmingdale/library/login-screen.fxml"));
         Scene scene = backToLoginButton.getScene();
         scene.setRoot(newRoot);
     }
+
+    //function to check if the passwords has signs&num&upperlower
+    private boolean includesSigns(String str){
+        String pattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$";
+        return (str != null) && str.matches(pattern);
+    }
+
+    //function to check if the name is a valid name
+    private boolean nameIsValid(String str){
+        String pattern = "^[A-Za-z]+\\s+[A-Za-z]+$";
+        return (str != null) && str.matches(pattern);
+    }
+
+    //function to check if the email is valid school email
+    public static boolean emailIsValid(String name, String email) {
+        if (name == null || email == null) return false;
+
+        name = name.trim();
+        email = email.trim().toLowerCase();
+
+        String namePattern = "^[A-Za-z]+\\s+[A-Za-z]+$";
+        if (!name.matches(namePattern)) {
+            return false;
+        }
+
+        String[] parts = name.split("\\s+");
+        String lastName = parts[1];
+        char requiredInitial = Character.toLowerCase(lastName.charAt(0));
+
+
+        return email.startsWith(String.valueOf(requiredInitial))
+                && email.endsWith("@farmingdale.edu");
+    }
+
 
 
 }
