@@ -1,5 +1,8 @@
 package edu.farmingdale.library;
 
+import java.util.Collections;
+import java.util.HashSet;
+
 public class Student {
 
     private static int nextID = 100000;
@@ -8,7 +11,7 @@ public class Student {
     private String lastName;
     private String email;
     private String password;
-    private Book[] bookList;
+    private HashSet<Book> currentBooks;
 
     public Student( String password, String email, String lastName, String firstName) {
         this.ID = nextID++;
@@ -38,17 +41,26 @@ public class Student {
         return password;
     }
 
-    public Book[] getBookList() {
-        return bookList;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void addBook(){
-
+    public void addBook(Book book){
+        currentBooks.add(book);
     }
+
+    public void removeBook(Book book){
+        currentBooks.remove(book);
+    }
+
+    public HashSet<Book> getCurrentBooks() {
+        return currentBooks;
+    }
+
+
+
+
+
 
 
 }
