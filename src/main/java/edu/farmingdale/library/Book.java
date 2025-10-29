@@ -7,13 +7,13 @@ public class Book
 
     private static int nextID = 100000;
     private int ID;
-    private int ISBN;
+    private String ISBN;
     private String bookTitle;
     private String author;
     private Boolean inLibrary;
     private Student possesion;
 
-    public Book(int ISBN, String bookTitle, String author, Boolean inLibrary, Student possesion) {
+    public Book(String ISBN, String bookTitle, String author, Boolean inLibrary, Student possesion) {
         this.bookTitle = bookTitle;
         this.author = author;
         this.inLibrary = inLibrary;
@@ -26,7 +26,7 @@ public class Book
         return ID;
     }
 
-    public int getISBN() {
+    public String getISBN() {
         return ISBN;
     }
 
@@ -71,5 +71,15 @@ public class Book
         return this.bookTitle.compareToIgnoreCase(other.bookTitle);
     }
 
-
+    @Override
+    public String toString() {
+        return "Book{" +
+                "ID=" + ID +
+                ", ISBN='" + ISBN + '\'' +
+                ", bookTitle='" + bookTitle + '\'' +
+                ", author='" + author + '\'' +
+                ", inLibrary=" + inLibrary +
+                ", possesion=" + possesion +
+                '}';
+    }
 }

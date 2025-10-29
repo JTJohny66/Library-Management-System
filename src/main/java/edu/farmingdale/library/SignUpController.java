@@ -42,4 +42,6 @@ public class SignUpController {
         Scene scene = backToLoginButton.getScene();
         scene.setRoot(newRoot);
     }
+
+
 }
