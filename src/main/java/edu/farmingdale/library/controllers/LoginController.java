@@ -63,7 +63,7 @@ public class LoginController {
 
     @FXML
     private void signUp() throws IOException {
-        switchScene("/edu/farmingdale/library/sign-up.fxml");
+        switchScene("/edu/farmingdale/library/sign-up-screen.fxml");
     }
 
     @FXML
