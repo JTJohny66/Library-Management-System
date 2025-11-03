@@ -13,64 +13,79 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.library.controllers.LoginController">
-
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.farmingdale.library.controllers.LoginController">
 
     <center>
         <VBox alignment="CENTER" spacing="18.0">
 
             <VBox alignment="CENTER_LEFT" maxWidth="520.0" spacing="16.0" styleClass="card">
-
                 <padding>
                     <Insets bottom="28" left="28" right="28" top="28" />
                 </padding>
 
-
-                <Label maxWidth="Infinity" styleClass="title" text="Farmingdale Library Management" />
-            <Label maxWidth="Infinity" styleClass="error" visible="false" />
-
+                <Label maxWidth="Infinity" styleClass="title" text="Farmingdale Library Login" />
 
                 <GridPane hgap="14" maxWidth="Infinity" vgap="12">
                     <columnConstraints>
-
-                        <ColumnConstraints halignment="RIGHT" maxWidth="135.0" minWidth="114.0" prefWidth="114.0" />
-
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="268.5" minWidth="180.5" prefWidth="243.5" />
-                  <ColumnConstraints hgrow="ALWAYS" maxWidth="116.0" minWidth="10.0" prefWidth="79.0" />
+                        <ColumnConstraints halignment="RIGHT" prefWidth="114.0" />
+                        <ColumnConstraints hgrow="ALWAYS" prefWidth="240.0" />
+                        <ColumnConstraints prefWidth="100.0" />
                     </columnConstraints>
 
                     <children>
-                  <TextField fx:id="visiblePasswordField" layoutX="138.0" layoutY="10.0" onKeyTyped="#updateCheck" promptText="Enter password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Email" GridPane.rowIndex="0" />
-                        <TextField fx:id="emailField" onKeyTyped="#updateCheck" promptText="Enter email" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="emailField" onKeyTyped="#updateCheck"
+                                   promptText="you@farmingdale.edu"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                         <Label text="Password" GridPane.rowIndex="1" />
-                        <PasswordField fx:id="passwordField" onKeyTyped="#updateCheck" promptText="Enter password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <ToggleButton fx:id="toggleButton" mnemonicParsing="false" onAction="#toggle" prefHeight="37.0" prefWidth="222.0" styleClass="primary" text="Unhide" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <PasswordField fx:id="passwordField" onKeyTyped="#updateCheck"
+                                       promptText="Password"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <TextField fx:id="visiblePasswordField"
+                                   onKeyTyped="#updateCheck"
+                                   promptText="Password"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                   visible="false" />
+
+                        <ToggleButton fx:id="toggleButton" onAction="#toggle"
+                                      text="Show"
+                                      styleClass="primary"
+                                      GridPane.columnIndex="2" GridPane.rowIndex="1" />
                     </children>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
                 </GridPane>
 
+                <Label fx:id="errorLabel" maxWidth="Infinity" styleClass="error"
+                       text="Incorrect email or password" visible="false" />
 
-                <Label fx:id="errorLabel" maxWidth="Infinity" styleClass="error" text="Password incorrect" visible="false" />
-
-
-                <Button fx:id="loginButton" maxWidth="Infinity" onAction="#login" prefHeight="40.0" styleClass="primary" text="Login" />
-
+                <Button fx:id="loginButton" maxWidth="Infinity"
+                        onAction="#login" prefHeight="40.0"
+                        styleClass="primary" text="Login" />
 
                 <HBox alignment="CENTER" maxWidth="Infinity" spacing="8.0">
                     <Label text="Don’t have an account?" />
-                    <Button fx:id="signUpButton" onAction="#signUp" styleClass="link-button" text="Sign up" />
+                    <Button fx:id="signUpButton" onAction="#signUp"
+                            styleClass="link-button" text="Sign up" />
                 </HBox>
+
+                <!-- ✅ Back To Welcome -->
+                <Button onAction="#goToWelcome" styleClass="link-button" text="Back to Welcome" />
+
             </VBox>
         </VBox>
     </center>
 
-
     <padding>
         <Insets bottom="24" left="24" right="24" top="24" />
     </padding>
+
 </BorderPane>

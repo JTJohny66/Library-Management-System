@@ -13,7 +13,7 @@ public class Main extends Application {
         System.out.println(Main.class.getResource("/edu/farmingdale/library/login-screen.fxml"));
 
         FXMLLoader loader =
-                new FXMLLoader(Main.class.getResource("/edu/farmingdale/library/login-screen.fxml"));
+                new FXMLLoader(Main.class.getResource("/edu/farmingdale/library/welcome.fxml"));
         Scene loginScene = new Scene(loader.load(), 420, 260);
         stage.setTitle("Login • Library");
         stage.setScene(loginScene);

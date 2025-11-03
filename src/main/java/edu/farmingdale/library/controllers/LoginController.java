@@ -14,8 +14,8 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 
-
 public class LoginController {
+
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private TextField visiblePasswordField;
@@ -24,23 +24,23 @@ public class LoginController {
     @FXML private Button signUpButton;
     @FXML private Label errorLabel;
 
-    //Toggle Password Visibility using overlapped fields
-    @FXML private void toggle(){
+    @FXML
+    private void toggle(){
         if(toggleButton.isSelected()){
             visiblePasswordField.setText(passwordField.getText());
             visiblePasswordField.toFront();
-        }
-        if(!toggleButton.isSelected()){
+        } else {
             passwordField.setText(visiblePasswordField.getText());
             passwordField.toFront();
         }
     }
 
-    @FXML private void login()throws IOException{
+    @FXML
+    private void login() throws IOException {
         Library lib = Library.getInstance();
-        if(lib.getStudentByEmail(emailField.getText())!=null
-                && lib.getStudentByEmail(emailField.getText()).isPassword(getPasswordInput())){
-                    Student student = lib.getStudentByEmail(emailField.getText());
+        Student student = lib.getStudentByEmail(emailField.getText());
+
+        if(student != null && student.isPassword(getPasswordInput())) {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/library/student-homepage.fxml"));
             Parent root = loader.load();
@@ -50,8 +50,7 @@ public class LoginController {
 
             Scene scene = loginButton.getScene();
             scene.setRoot(root);
-        }
-        else{
+        } else {
             errorLabel.setText("Incorrect email or password");
             errorLabel.setVisible(true);
         }
@@ -64,8 +63,17 @@ public class LoginController {
 
     @FXML
     private void signUp() throws IOException {
-        Parent newRoot = FXMLLoader.load(getClass().getResource("/edu/farmingdale/library/sign-up-screen.fxml"));
-        Scene scene = loginButton.getScene();
+        switchScene("/edu/farmingdale/library/sign-up.fxml");
+    }
+
+    @FXML
+    private void goToWelcome() throws IOException {
+        switchScene("/edu/farmingdale/library/welcome.fxml");
+    }
+
+    private void switchScene(String fxmlPath) throws IOException {
+        Parent newRoot = FXMLLoader.load(getClass().getResource(fxmlPath));
+        Scene scene = loginButton.getScene(); // or any control in that screen
         scene.setRoot(newRoot);
     }
 
@@ -74,6 +82,4 @@ public class LoginController {
                 ? visiblePasswordField.getText()
                 : passwordField.getText();
     }
-
-
 }

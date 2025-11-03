@@ -13,9 +13,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.library.controllers.SignUpController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.farmingdale.library.controllers.SignUpController">
 
-    <!-- Centered card -->
     <center>
         <VBox alignment="CENTER" spacing="18.0">
             <VBox alignment="CENTER_LEFT" maxWidth="520.0" spacing="16.0" styleClass="card">
@@ -27,62 +29,66 @@
                 <!-- Title -->
                 <Label maxWidth="Infinity" styleClass="title" text="Farmingdale Library — Create Account" />
 
-                <!-- Error (hidden by default) -->
-                <Label fx:id="errorLabel" maxWidth="Infinity" styleClass="error" text="Please fix the highlighted fields" visible="false" />
+                <!-- Error message -->
+                <Label fx:id="errorLabel" maxWidth="Infinity" styleClass="error"
+                       text="Please fix the highlighted fields" visible="false" />
 
                 <!-- Form -->
                 <GridPane hgap="14" maxWidth="Infinity" vgap="12">
                     <columnConstraints>
-                        <!-- labels -->
-                        <ColumnConstraints halignment="RIGHT" maxWidth="135.0" minWidth="114.0" prefWidth="114.0" />
-                        <!-- inputs -->
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="268.5" minWidth="180.5" prefWidth="243.5" />
+                        <ColumnConstraints halignment="RIGHT" minWidth="114.0" prefWidth="114.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="180.5" prefWidth="243.5" />
                     </columnConstraints>
 
-                    <rowConstraints>
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                    </rowConstraints>
-
                     <children>
-                        <!-- Full Name -->
+
                         <Label text="Full Name" GridPane.rowIndex="0" />
-                        <TextField fx:id="fullNameField" onKeyTyped="#updateCheck" promptText="e.g., Jordan Smith" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="fullNameField" onKeyTyped="#updateCheck"
+                                   promptText="e.g., Jordan Smith"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                        <!-- Email -->
                         <Label text="Email" GridPane.rowIndex="1" />
-                        <TextField fx:id="emailField" onKeyTyped="#updateCheck" promptText="you@example.edu" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="emailField" onKeyTyped="#updateCheck"
+                                   promptText="you@example.edu"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                        <!-- Password -->
                         <Label text="Password" GridPane.rowIndex="2" />
-                        <PasswordField fx:id="passwordField" onKeyTyped="#updateCheck" promptText="Create a password" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <PasswordField fx:id="passwordField" onKeyTyped="#updateCheck"
+                                       promptText="Create a password"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                        <!-- Confirm Password -->
                         <Label text="Confirm Password" GridPane.rowIndex="3" />
-                        <PasswordField fx:id="confirmPasswordField" onKeyTyped="#updateCheck" promptText="Re-enter password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <PasswordField fx:id="confirmPasswordField" onKeyTyped="#updateCheck"
+                                       promptText="Re-enter password"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                        <!-- Terms checkbox (spans input column) -->
-                        <CheckBox fx:id="termsCheckBox" onAction="#updateCheck" text="I agree to the library’s terms of use and policies" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <CheckBox fx:id="termsCheckBox" onAction="#updateCheck"
+                                  text="I agree to the library’s terms of use and policies"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     </children>
                 </GridPane>
 
                 <!-- Sign Up button -->
-                <Button fx:id="signUpButton" maxWidth="Infinity" onAction="#createAccount" prefHeight="40.0" styleClass="primary" text="Sign Up" />
+                <Button fx:id="signUpButton" maxWidth="Infinity" onAction="#createAccount"
+                        prefHeight="40.0" styleClass="primary" text="Sign Up" />
 
-                <!-- Back to login -->
+                <!-- Return choices -->
                 <HBox alignment="CENTER" maxWidth="Infinity" spacing="8.0">
                     <Label text="Already have an account?" />
-                    <Button fx:id="backToLoginButton" onAction="#goToLogin" styleClass="link-button" text="Log in" />
+                    <Button fx:id="backToLoginButton" onAction="#goToLogin"
+                            styleClass="link-button" text="Log in" />
                 </HBox>
+
+                <!-- Back to welcome -->
+                <Button fx:id="backToWelcomeButton" onAction="#goToWelcome"
+                        styleClass="link-button" text="Back to Welcome" />
+
             </VBox>
         </VBox>
     </center>
 
-    <!-- Padding around the card -->
     <padding>
         <Insets bottom="24" left="24" right="24" top="24" />
     </padding>
+
 </BorderPane>
