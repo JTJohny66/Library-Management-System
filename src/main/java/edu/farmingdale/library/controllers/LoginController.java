@@ -25,13 +25,23 @@ public class LoginController {
     @FXML private Label errorLabel;
 
     @FXML
-    private void toggle(){
-        if(toggleButton.isSelected()){
+    private void toggle() {
+        if (toggleButton.isSelected()) {
+            toggleButton.setText("Hide");
             visiblePasswordField.setText(passwordField.getText());
-            visiblePasswordField.toFront();
+            visiblePasswordField.setVisible(true);
+            visiblePasswordField.setManaged(true);
+
+            passwordField.setVisible(false);
+            passwordField.setManaged(false);
         } else {
+            toggleButton.setText("Show");
             passwordField.setText(visiblePasswordField.getText());
-            passwordField.toFront();
+            passwordField.setVisible(true);
+            passwordField.setManaged(true);
+
+            visiblePasswordField.setVisible(false);
+            visiblePasswordField.setManaged(false);
         }
     }
 
