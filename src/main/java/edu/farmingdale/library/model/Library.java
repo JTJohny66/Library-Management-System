@@ -101,6 +101,25 @@ public class Library {
                 .collect(Collectors.toList());
     }
 
+    // ====== BOOK SEARCHING ======
+
+    public List<Book> searchByTitle(String title) {
+        return copiesById.values().stream()
+                .filter(b -> b.getBookTitle().toLowerCase().contains(title.toLowerCase()))
+                .toList();
+    }
+
+    public List<Book> searchByAuthor(String author) {
+        return copiesById.values().stream()
+                .filter(b -> b.getAuthor().toLowerCase().contains(author.toLowerCase()))
+                .toList();
+    }
+
+    public Book searchById(int id) {
+        return copiesById.get(id); // direct O(1) lookup
+    }
+
+
     // ====== DUE DATE TRACKING ======
 
     public void setDueDate(Book book, LocalDate date) {

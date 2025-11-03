@@ -18,7 +18,6 @@ public class SignUpController {
     // Form fields
     @FXML private TextField fullNameField;
     @FXML private TextField emailField;
-    @FXML private TextField studentIdField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
     @FXML private CheckBox termsCheckBox;
@@ -27,7 +26,7 @@ public class SignUpController {
     @FXML private Label errorLabel;
     @FXML private Button signUpButton;
     @FXML private Button backToLoginButton;
-    private boolean fullscreen;
+
 
 
     @FXML
@@ -86,8 +85,14 @@ public class SignUpController {
                 new Student(passwordField.getText(), emailField.getText(), lastName, firstName)
         );
 
-        errorLabel.setVisible(false);
-        System.out.println("✅ Account Created Successfully!");
+        errorLabel.setText("✅ Account Created Successfully!");
+        errorLabel.setVisible(true);
+        passwordField.setText("");
+        confirmPasswordField.setText("");
+        fullNameField.setText("");
+        emailField.setText("");
+        termsCheckBox.setSelected(false);
+
     }
 
 

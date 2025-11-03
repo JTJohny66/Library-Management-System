@@ -56,8 +56,8 @@ public class Student {
         return currentBooks;
     }
 
-
-
-
+    public boolean isPassword(String str){
+        return(str.equals(password));
+    }
 
 }

@@ -1,6 +1,7 @@
 package edu.farmingdale.library;
 
 import edu.farmingdale.library.model.Library;
+import edu.farmingdale.library.model.Student;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,12 +20,16 @@ public class Main extends Application {
         stage.setMinWidth(550);
         stage.setMinHeight(550);
         stage.show();
+
+        //temporary manual sign up for debugging
+        Student s1 = new Student("Hello123!", "willjt6@farmingdale.edu", "Williams", "Jonathan");
+        Library.getInstance().addStudent(s1);
+
     }
 
     public static void main(String[] args) {
         launch();
 
-        Library.getInstance();
     }
 
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.farmingdale.library.controllers.StudentHomeController">
+
+    <!-- Top Header -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+            <Label fx:id="welcomeLabel" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Welcome,"/>
+            <HBox HBox.hgrow="ALWAYS"/>
+            <Button fx:id="logoutButton" text="Logout" styleClass="primary"/>
+        </HBox>
+    </top>
+
+    <!-- Center content -->
+    <center>
+        <VBox spacing="28" alignment="TOP_CENTER">
+            <padding><Insets top="0" right="28" bottom="28" left="28"/></padding>
+
+            <!-- Search UI -->
+            <VBox spacing="8" alignment="CENTER_LEFT">
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Search by:" style="-fx-font-weight: bold;"/>
+
+                    <ComboBox fx:id="searchTypeBox" prefWidth="150">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Title"/>
+                                <String fx:value="Author"/>
+                                <String fx:value="ID"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <TextField fx:id="searchField" promptText="Enter search..." visible="false" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="searchButton" text="Search" styleClass="primary" visible="false" onAction="#onSearch"/>
+                </HBox>
+
+            </VBox>
+
+            <!-- Available Books -->
+            <VBox spacing="10" maxWidth="Infinity">
+                <Label text="Available Books" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <TableView fx:id="availableBooksTable" prefHeight="200" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colAvailableTitle" text="Title" prefWidth="240"/>
+                        <TableColumn fx:id="colAvailableAuthor" text="Author" prefWidth="160"/>
+                        <TableColumn fx:id="colAvailableStatus" text="Status" prefWidth="100"/>
+                        <TableColumn fx:id="colAvailableAction" text="Borrow" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- My Books -->
+            <VBox spacing="10" maxWidth="Infinity">
+                <Label text="My Books" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <TableView fx:id="myBooksTable" prefHeight="200" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colMyTitle" text="Title" prefWidth="240"/>
+                        <TableColumn fx:id="colMyAuthor" text="Author" prefWidth="160"/>
+                        <TableColumn fx:id="colMyDueDate" text="Due Date" prefWidth="140"/>
+                        <TableColumn fx:id="colMyReturn" text="Return" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+        </VBox>
+    </center>
+
+    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+
+</BorderPane>

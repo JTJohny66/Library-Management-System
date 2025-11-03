@@ -1,5 +1,7 @@
 package edu.farmingdale.library.controllers;
 
+import edu.farmingdale.library.model.Library;
+import edu.farmingdale.library.model.Student;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +16,7 @@ import javafx.scene.control.PasswordField;
 
 
 public class LoginController {
-    @FXML private TextField userNameField;
+    @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private TextField visiblePasswordField;
     @FXML private ToggleButton toggleButton;
@@ -34,8 +36,30 @@ public class LoginController {
         }
     }
 
-    @FXML private void login(){
+    @FXML private void login()throws IOException{
+        Library lib = Library.getInstance();
+        if(lib.getStudentByEmail(emailField.getText())!=null
+                && lib.getStudentByEmail(emailField.getText()).isPassword(getPasswordInput())){
+                    Student student = lib.getStudentByEmail(emailField.getText());
 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/library/student-homepage.fxml"));
+            Parent root = loader.load();
+
+            StudentHomeController controller = loader.getController();
+            controller.setStudent(student);
+
+            Scene scene = loginButton.getScene();
+            scene.setRoot(root);
+        }
+        else{
+            errorLabel.setText("Incorrect email or password");
+            errorLabel.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void updateCheck(){
+        errorLabel.setVisible(false);
     }
 
     @FXML
@@ -44,5 +68,12 @@ public class LoginController {
         Scene scene = loginButton.getScene();
         scene.setRoot(newRoot);
     }
+
+    private String getPasswordInput() {
+        return toggleButton.isSelected()
+                ? visiblePasswordField.getText()
+                : passwordField.getText();
+    }
+
 
 }

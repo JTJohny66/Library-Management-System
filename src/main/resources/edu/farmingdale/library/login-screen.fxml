@@ -40,12 +40,12 @@
                     </columnConstraints>
 
                     <children>
-                  <TextField fx:id="visiblePasswordField" layoutX="138.0" layoutY="10.0" promptText="Enter password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Username" GridPane.rowIndex="0" />
-                        <TextField fx:id="userNameField" promptText="Enter username" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  <TextField fx:id="visiblePasswordField" layoutX="138.0" layoutY="10.0" onKeyTyped="#updateCheck" promptText="Enter password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Email" GridPane.rowIndex="0" />
+                        <TextField fx:id="emailField" onKeyTyped="#updateCheck" promptText="Enter email" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                         <Label text="Password" GridPane.rowIndex="1" />
-                        <PasswordField fx:id="passwordField" promptText="Enter password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <PasswordField fx:id="passwordField" onKeyTyped="#updateCheck" promptText="Enter password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <ToggleButton fx:id="toggleButton" mnemonicParsing="false" onAction="#toggle" prefHeight="37.0" prefWidth="222.0" styleClass="primary" text="Unhide" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                     </children>
                <rowConstraints>
