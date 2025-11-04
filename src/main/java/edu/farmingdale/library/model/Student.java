@@ -18,6 +18,7 @@ public class Student {
         this.email = email;
         this.lastName = lastName;
         this.firstName = firstName;
+        this.currentBooks = new HashSet<>();
     }
 
     public int getID() {

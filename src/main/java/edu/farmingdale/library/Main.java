@@ -21,15 +21,25 @@ public class Main extends Application {
         stage.setMinHeight(550);
         stage.show();
 
-        //temporary manual sign up for debugging
-        Student s1 = new Student("Hello123!", "willjt6@farmingdale.edu", "Williams", "Jonathan");
-        Library.getInstance().addStudent(s1);
+
+
 
     }
 
     public static void main(String[] args) {
-        launch();
 
+        Student s1 = new Student("Hello123!", "willjt6@farmingdale.edu", "Williams", "Jonathan");
+        Library.getInstance().addStudent(s1);
+
+
+
+
+
+
+
+
+
+        launch();
     }
 
 }

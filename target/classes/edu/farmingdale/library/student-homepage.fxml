@@ -1,85 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.farmingdale.library.controllers.StudentHomeController">
+<!-- ✅ THIS WAS MISSING -->
+
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.library.controllers.StudentHomeController">
 
     <!-- Top Header -->
     <top>
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
 
-            <Label fx:id="welcomeLabel" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Welcome,"/>
-            <HBox HBox.hgrow="ALWAYS"/>
-            <Button fx:id="logoutButton" text="Logout" styleClass="primary"/>
+            <Label fx:id="welcomeLabel" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+            <HBox HBox.hgrow="ALWAYS" />
+            <Button fx:id="logoutButton" onAction="#logOut" styleClass="primary" text="Logout" />
         </HBox>
     </top>
 
-    <!-- Center content -->
+    <!-- Tabs -->
     <center>
-        <VBox spacing="28" alignment="TOP_CENTER">
-            <padding><Insets top="0" right="28" bottom="28" left="28"/></padding>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
 
-            <!-- Search UI -->
-            <VBox spacing="8" alignment="CENTER_LEFT">
+            <!-- Available Books Tab -->
+            <Tab text="Available Books">
+                <VBox alignment="TOP_CENTER" spacing="12">
+                    <padding><Insets bottom="28" left="28" right="28" top="16" /></padding>
 
-                <HBox spacing="12" alignment="CENTER_LEFT">
-                    <Label text="Search by:" style="-fx-font-weight: bold;"/>
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <Label style="-fx-font-weight: bold;" text="Search by:" />
 
-                    <ComboBox fx:id="searchTypeBox" prefWidth="150">
-                        <items>
-                            <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Title"/>
-                                <String fx:value="Author"/>
-                                <String fx:value="ID"/>
-                            </FXCollections>
-                        </items>
-                    </ComboBox>
-                </HBox>
+                        <ComboBox fx:id="searchTypeBox" prefWidth="150">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Title" />
+                                    <String fx:value="Author" />
+                                    <String fx:value="ID" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
 
-                <HBox spacing="12" alignment="CENTER_LEFT">
-                    <TextField fx:id="searchField" promptText="Enter search..." visible="false" HBox.hgrow="ALWAYS"/>
-                    <Button fx:id="searchButton" text="Search" styleClass="primary" visible="false" onAction="#onSearch"/>
-                </HBox>
+                        <TextField fx:id="searchField" promptText="Enter search..." HBox.hgrow="ALWAYS" />
+                        <Button fx:id="searchButton" onAction="#onSearch" styleClass="primary" text="Search" />
+                    </HBox>
 
-            </VBox>
+                    <TableView fx:id="availableBooksTable" prefHeight="420" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colAvailableID" prefWidth="80" text="ID" />
+                            <TableColumn fx:id="colAvailableTitle" prefWidth="300" text="Title" />
+                            <TableColumn fx:id="colAvailableAuthor" prefWidth="200" text="Author" />
+                            <TableColumn fx:id="colAvailableAction" prefWidth="140" text="Borrow" />
+                        </columns>
+                    </TableView>
 
-            <!-- Available Books -->
-            <VBox spacing="10" maxWidth="Infinity">
-                <Label text="Available Books" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                <TableView fx:id="availableBooksTable" prefHeight="200" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colAvailableTitle" text="Title" prefWidth="240"/>
-                        <TableColumn fx:id="colAvailableAuthor" text="Author" prefWidth="160"/>
-                        <TableColumn fx:id="colAvailableStatus" text="Status" prefWidth="100"/>
-                        <TableColumn fx:id="colAvailableAction" text="Borrow" prefWidth="120"/>
-                    </columns>
-                </TableView>
-            </VBox>
+                </VBox>
+            </Tab>
 
-            <!-- My Books -->
-            <VBox spacing="10" maxWidth="Infinity">
-                <Label text="My Books" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                <TableView fx:id="myBooksTable" prefHeight="200" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="colMyTitle" text="Title" prefWidth="240"/>
-                        <TableColumn fx:id="colMyAuthor" text="Author" prefWidth="160"/>
-                        <TableColumn fx:id="colMyDueDate" text="Due Date" prefWidth="140"/>
-                        <TableColumn fx:id="colMyReturn" text="Return" prefWidth="120"/>
-                    </columns>
-                </TableView>
-            </VBox>
 
-        </VBox>
+            <!-- My Books Tab -->
+            <Tab text="My Books">
+                <VBox alignment="TOP_CENTER" spacing="12">
+                    <padding><Insets bottom="28" left="28" right="28" top="16" /></padding>
+
+                    <TableView fx:id="myBooksTable" prefHeight="480" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colMyID" prefWidth="80" text="ID" />
+                            <TableColumn fx:id="colMyTitle" prefWidth="300" text="Title" />
+                            <TableColumn fx:id="colMyAuthor" prefWidth="200" text="Author" />
+                            <TableColumn fx:id="colMyDueDate" prefWidth="140" text="Due Date" />
+                            <TableColumn fx:id="colMyReturn" prefWidth="140" text="Return" />
+                        </columns>
+                    </TableView>
+
+                </VBox>
+            </Tab>
+
+        </TabPane>
     </center>
-
-    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
 
 </BorderPane>
