@@ -21,9 +21,45 @@ public class Library {
     public static Library getInstance() {
         if (instance == null) {
             instance = new Library();
+            instance.loadBooksFromCSV();
         }
         return instance;
     }
+
+    public void loadBooksFromCSV() {
+        String path = "/edu/farmingdale/library/books.csv";
+
+        try (Scanner scanner = new Scanner(Objects.requireNonNull(getClass().getResourceAsStream(path)))) {
+
+            if (scanner.hasNextLine()) scanner.nextLine(); // Skip header
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (line.isEmpty()) continue; // skip blank lines
+
+                String[] parts = line.split(",", 3); // ensure we only split into 3 parts
+
+                if (parts.length < 3) {
+                    System.out.println("Skipping invalid row: " + line);
+                    continue;
+                }
+
+                String isbn = parts[0].trim();
+                String title = parts[1].trim();
+                String author = parts[2].trim();
+
+                Book book = new Book(isbn, title, author, true, null);
+                addBookCopy(book);
+            }
+
+            System.out.println("✅ Books loaded successfully.");
+
+        } catch (Exception e) {
+            System.out.println("⚠️ Error loading books: " + e.getMessage());
+        }
+    }
+
+
 
     // ====== STUDENT MANAGEMENT ======
 
