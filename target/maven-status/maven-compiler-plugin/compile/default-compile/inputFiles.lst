@@ -1,3 +1,9 @@
-/Users/jonathanwilliams/DataAlgoDemos/Library-Management-System/src/main/java/edu.farmingdale.library/HelloController.java
-/Users/jonathanwilliams/DataAlgoDemos/Library-Management-System/src/main/java/edu.farmingdale.library/Main.java
-/Users/jonathanwilliams/DataAlgoDemos/Library-Management-System/src/main/java/module-info.java
+C:\Users\Jonathon\IdeaProjects\Library-Management-System-Personal-Fork\src\main\java\edu\farmingdale\library\controllers\LoginController.java
+C:\Users\Jonathon\IdeaProjects\Library-Management-System-Personal-Fork\src\main\java\edu\farmingdale\library\controllers\SignUpController.java
+C:\Users\Jonathon\IdeaProjects\Library-Management-System-Personal-Fork\src\main\java\edu\farmingdale\library\controllers\StudentHomeController.java
+C:\Users\Jonathon\IdeaProjects\Library-Management-System-Personal-Fork\src\main\java\edu\farmingdale\library\controllers\WelcomeController.java
+C:\Users\Jonathon\IdeaProjects\Library-Management-System-Personal-Fork\src\main\java\edu\farmingdale\library\FirebaseConfig.java
+C:\Users\Jonathon\IdeaProjects\Library-Management-System-Personal-Fork\src\main\java\edu\farmingdale\library\Main.java
+C:\Users\Jonathon\IdeaProjects\Library-Management-System-Personal-Fork\src\main\java\edu\farmingdale\library\model\Book.java
+C:\Users\Jonathon\IdeaProjects\Library-Management-System-Personal-Fork\src\main\java\edu\farmingdale\library\model\Library.java
+C:\Users\Jonathon\IdeaProjects\Library-Management-System-Personal-Fork\src\main\java\edu\farmingdale\library\model\Student.java

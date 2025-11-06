@@ -68,8 +68,17 @@ public class StudentHomeController {
     private void refreshTables() {
         Library lib = Library.getInstance();
         availableBooksTable.setItems(FXCollections.observableArrayList(lib.getAllBooks()));
-        if (student != null)
-            myBooksTable.setItems(FXCollections.observableArrayList(student.getCurrentBooks()));
+
+        if (student != null) {
+            // Convert ISBNs → Book objects
+            var bookList = student.getCurrentBooks()
+                    .stream()
+                    .map(isbn -> lib.getBookByIsbn(isbn))
+                    .filter(b -> b != null)
+                    .toList();
+
+            myBooksTable.setItems(FXCollections.observableArrayList(bookList));
+        }
     }
 
     @FXML

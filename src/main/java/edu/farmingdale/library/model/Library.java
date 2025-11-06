@@ -1,8 +1,19 @@
 package edu.farmingdale.library.model;
 
+import com.google.cloud.firestore.Firestore;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import edu.farmingdale.library.FirebaseConfig;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.WriteResult;
+
+
+
+
 
 public class Library {
 
@@ -22,6 +33,7 @@ public class Library {
         if (instance == null) {
             instance = new Library();
             instance.loadBooksFromCSV();
+            instance.loadStudentsFromFirebase();
         }
         return instance;
     }
@@ -59,13 +71,49 @@ public class Library {
         }
     }
 
+    public void loadStudentsFromFirebase() {
+        try {
+            Firestore db = FirebaseConfig.getDB();
+            ApiFuture<QuerySnapshot> future = db.collection("students").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            for (QueryDocumentSnapshot doc : documents) {
+                Student s = doc.toObject(Student.class);
+                students.put(s.getEmail().toLowerCase(Locale.ROOT), s);
+            }
+
+            System.out.println("✅ Loaded " + students.size() + " students from Firebase.");
+        } catch (Exception e) {
+            System.out.println("❌ Failed to load students: " + e.getMessage());
+        }
+    }
+
+
+
 
 
     // ====== STUDENT MANAGEMENT ======
 
     public void addStudent(Student student) {
+        // Add to in-memory map
         students.put(student.getEmail().toLowerCase(Locale.ROOT), student);
+
+        try {
+            Firestore db = FirebaseConfig.getDB();
+            ApiFuture<WriteResult> future = db.collection("students")
+                    .document(student.getEmail().toLowerCase(Locale.ROOT))
+                    .set(student);
+
+            // Wait for confirmation
+            future.get();
+            System.out.println("✅ Student saved to Firebase: " + student.getEmail());
+
+        } catch (Exception e) {
+            System.out.println("❌ Failed to save student to Firebase: " + e.getMessage());
+        }
     }
+
+
 
     public boolean emailExists(String email) {
         return students.containsKey(email.toLowerCase(Locale.ROOT));
@@ -116,6 +164,16 @@ public class Library {
     public Collection<Book> getAllBooks() {
         return copiesById.values();
     }
+
+    public Book getBookByIsbn(String isbn) {
+        for (Book b : copiesById.values()) {
+            if (b.getISBN().equalsIgnoreCase(isbn)) {
+                return b;
+            }
+        }
+        return null;
+    }
+
 
     // ====== BOOK SORTING ======
 

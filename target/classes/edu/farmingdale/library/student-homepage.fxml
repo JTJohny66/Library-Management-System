@@ -58,10 +58,10 @@
 
                     <TableView fx:id="availableBooksTable" prefHeight="420" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colAvailableID" prefWidth="80" text="ID" />
-                            <TableColumn fx:id="colAvailableTitle" prefWidth="300" text="Title" />
-                            <TableColumn fx:id="colAvailableAuthor" prefWidth="200" text="Author" />
-                            <TableColumn fx:id="colAvailableAction" prefWidth="140" text="Borrow" />
+                            <TableColumn fx:id="colAvailableID" prefWidth="134.0" text="ID" />
+                            <TableColumn fx:id="colAvailableTitle" prefWidth="126.0" text="Title" />
+                            <TableColumn fx:id="colAvailableAuthor" prefWidth="209.0" text="Author" />
+                            <TableColumn fx:id="colAvailableAction" prefWidth="251.0" text="Borrow" />
                         </columns>
                     </TableView>
 

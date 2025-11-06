@@ -27,9 +27,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-
-        Student s1 = new Student("Hello123!", "willjt6@farmingdale.edu", "Williams", "Jonathan");
-        Library.getInstance().addStudent(s1);
+        Library library = Library.getInstance();
 
 
 
