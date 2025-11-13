@@ -36,6 +36,7 @@ public class StudentHomeController {
 
     @FXML
     private void initialize() {
+        // Available books columns
         colAvailableID.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleIntegerProperty(data.getValue().getID()).asObject());
         colAvailableTitle.setCellValueFactory(data ->
@@ -43,6 +44,7 @@ public class StudentHomeController {
         colAvailableAuthor.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getAuthor()));
 
+        // Add borrow button column
         colAvailableAction.setCellFactory(param -> new TableCell<>() {
             private final Button borrowBtn = new Button("Borrow");
 
@@ -70,6 +72,7 @@ public class StudentHomeController {
             }
         });
 
+        // My books columns
         colMyID.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleIntegerProperty(data.getValue().getID()).asObject());
         colMyTitle.setCellValueFactory(data ->
@@ -82,6 +85,7 @@ public class StudentHomeController {
             return new javafx.beans.property.SimpleStringProperty(dueDateStr);
         });
 
+        // Add return button column
         colMyReturn.setCellFactory(param -> new TableCell<>() {
             private final Button returnBtn = new Button("Return");
 
@@ -104,6 +108,7 @@ public class StudentHomeController {
             }
         });
 
+        // Initialize search type combo box
         searchTypeBox.setValue("Title");
     }
 
@@ -113,6 +118,10 @@ public class StudentHomeController {
             book.setPossesion(student);
             student.addBook(book.getISBN());
             Library.getInstance().setDueDate(book, LocalDate.now().plusWeeks(2));
+
+            // 🆕 Save to Firebase
+            Library.getInstance().updateStudentInFirebase(student);
+
             refreshTables();
             showAlert("Success", "Book borrowed successfully!", Alert.AlertType.INFORMATION);
         } else {
@@ -125,6 +134,10 @@ public class StudentHomeController {
         book.setPossesion(null);
         student.removeBook(book.getISBN());
         Library.getInstance().setDueDate(book, null);
+
+        // 🆕 Save to Firebase
+        Library.getInstance().updateStudentInFirebase(student);
+
         refreshTables();
         showAlert("Success", "Book returned successfully!", Alert.AlertType.INFORMATION);
     }

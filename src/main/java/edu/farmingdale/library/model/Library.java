@@ -1,27 +1,23 @@
 package edu.farmingdale.library.model;
 
 import com.google.cloud.firestore.Firestore;
-
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
 import edu.farmingdale.library.FirebaseConfig;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.WriteResult;
 
-
-
-
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Library {
 
     private static Library instance;
 
-    private HashMap<Integer, Book> copiesById;       // Key = Book ID
-    private HashMap<String, Student> students;       // Key = student email
-    private HashMap<Book, LocalDate> dueDates;       // Track borrowed book due dates
+    private HashMap<Integer, Book> copiesById;
+    private HashMap<String, Student> students;
+    private HashMap<Book, LocalDate> dueDates;
 
     private Library() {
         copiesById = new HashMap<>();
@@ -34,6 +30,7 @@ public class Library {
             instance = new Library();
             instance.loadBooksFromCSV();
             instance.loadStudentsFromFirebase();
+            instance.syncBookAvailability(); // 🆕 Sync borrowed books
         }
         return instance;
     }
@@ -47,9 +44,9 @@ public class Library {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
-                if (line.isEmpty()) continue; // skip blank lines
+                if (line.isEmpty()) continue;
 
-                String[] parts = line.split(",", 3); // ensure we only split into 3 parts
+                String[] parts = line.split(",", 3);
 
                 if (parts.length < 3) {
                     System.out.println("Skipping invalid row: " + line);
@@ -88,23 +85,21 @@ public class Library {
         }
     }
 
-
-
-
-
     // ====== STUDENT MANAGEMENT ======
 
     public void addStudent(Student student) {
-        // Add to in-memory map
         students.put(student.getEmail().toLowerCase(Locale.ROOT), student);
+        saveStudentToFirebase(student);
+    }
 
+    // 🆕 NEW: Save student to Firebase
+    private void saveStudentToFirebase(Student student) {
         try {
             Firestore db = FirebaseConfig.getDB();
             ApiFuture<WriteResult> future = db.collection("students")
                     .document(student.getEmail().toLowerCase(Locale.ROOT))
                     .set(student);
 
-            // Wait for confirmation
             future.get();
             System.out.println("✅ Student saved to Firebase: " + student.getEmail());
 
@@ -113,7 +108,10 @@ public class Library {
         }
     }
 
-
+    // 🆕 NEW: Update student in Firebase (called when borrowing/returning books)
+    public void updateStudentInFirebase(Student student) {
+        saveStudentToFirebase(student); // Same method works for updates
+    }
 
     public boolean emailExists(String email) {
         return students.containsKey(email.toLowerCase(Locale.ROOT));
@@ -131,7 +129,6 @@ public class Library {
                         .thenComparing(Student::getFirstName))
                 .collect(Collectors.toList());
     }
-
 
     public List<Student> getStudentsSortedByEmail() {
         return students.values().stream()
@@ -174,7 +171,6 @@ public class Library {
         return null;
     }
 
-
     // ====== BOOK SORTING ======
 
     public List<Book> getBooksSortedByTitle() {
@@ -210,14 +206,29 @@ public class Library {
     }
 
     public Book searchById(int id) {
-        return copiesById.get(id); // direct O(1) lookup
+        return copiesById.get(id);
     }
-
 
     // ====== DUE DATE TRACKING ======
 
     public void setDueDate(Book book, LocalDate date) {
         dueDates.put(book, date);
+    }
+
+    // 🆕 NEW: Sync book availability based on student borrowed books
+    private void syncBookAvailability() {
+        // Mark all books borrowed by students as unavailable
+        for (Student student : students.values()) {
+            for (String isbn : student.getCurrentBooks()) {
+                Book book = getBookByIsbn(isbn);
+                if (book != null) {
+                    book.setInLibrary(false);
+                    book.setPossesion(student);
+                    System.out.println("📚 Synced: " + book.getBookTitle() + " → borrowed by " + student.getFirstName());
+                }
+            }
+        }
+        System.out.println("✅ Book availability synced with student records.");
     }
 
     public LocalDate getDueDate(Book book) {
