@@ -15,9 +15,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<!-- ✅ THIS WAS MISSING -->
-
-<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.library.controllers.StudentHomeController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.farmingdale.library.controllers.StudentHomeController">
 
     <!-- Top Header -->
     <top>
@@ -58,10 +59,10 @@
 
                     <TableView fx:id="availableBooksTable" prefHeight="420" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colAvailableID" prefWidth="134.0" text="ID" />
-                            <TableColumn fx:id="colAvailableTitle" prefWidth="126.0" text="Title" />
-                            <TableColumn fx:id="colAvailableAuthor" prefWidth="209.0" text="Author" />
-                            <TableColumn fx:id="colAvailableAction" prefWidth="251.0" text="Borrow" />
+                            <TableColumn fx:id="colAvailableID" prefWidth="100.0" text="ID" />
+                            <TableColumn fx:id="colAvailableTitle" prefWidth="250.0" text="Title" />
+                            <TableColumn fx:id="colAvailableAuthor" prefWidth="200.0" text="Author" />
+                            <TableColumn fx:id="colAvailableAction" prefWidth="170.0" text="Action" />
                         </columns>
                     </TableView>
 
@@ -77,10 +78,10 @@
                     <TableView fx:id="myBooksTable" prefHeight="480" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="colMyID" prefWidth="80" text="ID" />
-                            <TableColumn fx:id="colMyTitle" prefWidth="300" text="Title" />
+                            <TableColumn fx:id="colMyTitle" prefWidth="250" text="Title" />
                             <TableColumn fx:id="colMyAuthor" prefWidth="200" text="Author" />
                             <TableColumn fx:id="colMyDueDate" prefWidth="140" text="Due Date" />
-                            <TableColumn fx:id="colMyReturn" prefWidth="140" text="Return" />
+                            <TableColumn fx:id="colMyReturn" prefWidth="140" text="Action" />
                         </columns>
                     </TableView>
 
