@@ -1,5 +1,6 @@
 package edu.farmingdale.library;
 
+import edu.farmingdale.library.model.Admin;
 import edu.farmingdale.library.model.Library;
 import edu.farmingdale.library.model.Student;
 import javafx.application.Application;
@@ -22,20 +23,16 @@ public class Main extends Application {
         stage.show();
 
 
-
-
     }
 
     public static void main(String[] args) {
+
+        //Initiating the Singleton Library
         Library library = Library.getInstance();
 
-
-
-
-
-
-
-
+        //HardCoded Admin Class So They cannot be created or accessed in the program.
+        Admin admin = new Admin("willjt7@farmingdale.edu","Hello123!","Jonathan Williams");
+        library.addAdmin(admin);
 
         launch();
     }

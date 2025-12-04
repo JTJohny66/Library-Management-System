@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.farmingdale.library.controllers.AdminHomeController">
+
+    <!-- Top Header -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20">
+            <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+            <Label fx:id="welcomeLabel" style="-fx-font-size: 22px; -fx-font-weight: bold;"
+                   text="Admin Dashboard" />
+            <HBox HBox.hgrow="ALWAYS" />
+            <Button fx:id="logoutButton" onAction="#logOut" styleClass="primary" text="Logout" />
+        </HBox>
+    </top>
+
+    <!-- Tabs -->
+    <center>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+
+            <!-- Manage Books Tab -->
+            <Tab text="Manage Books">
+                <VBox alignment="TOP_CENTER" spacing="12">
+                    <padding><Insets bottom="28" left="28" right="28" top="16" /></padding>
+
+                    <!-- Search and Controls Row -->
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <Label style="-fx-font-weight: bold;" text="Search by:" />
+
+                        <ComboBox fx:id="searchTypeBox" prefWidth="120">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Title" />
+                                    <String fx:value="Author" />
+                                    <String fx:value="ISBN" />
+                                    <String fx:value="ID" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <TextField fx:id="searchField" promptText="Enter search..."
+                                   HBox.hgrow="ALWAYS" />
+                        <Button fx:id="searchButton" onAction="#onSearch"
+                                styleClass="primary" text="Search" />
+
+                        <Button fx:id="addBookButton" onAction="#addBook"
+                                styleClass="primary" text="+ Add Book" />
+                    </HBox>
+
+                    <!-- Books Table -->
+                    <TableView fx:id="booksTable" prefHeight="420" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colID" prefWidth="60.0" text="ID" />
+                            <TableColumn fx:id="colISBN" prefWidth="110.0" text="ISBN" />
+                            <TableColumn fx:id="colTitle" prefWidth="200.0" text="Title" />
+                            <TableColumn fx:id="colAuthor" prefWidth="150.0" text="Author" />
+                            <TableColumn fx:id="colRating" prefWidth="140.0" text="Rating" />
+                            <TableColumn fx:id="colAvailable" prefWidth="80.0" text="Available" />
+                            <TableColumn fx:id="colBorrowedBy" prefWidth="120.0" text="Borrowed By" />
+                            <TableColumn fx:id="colActions" prefWidth="140.0" text="Actions" />
+                        </columns>
+                    </TableView>
+
+                </VBox>
+            </Tab>
+
+            <!-- Overdue Books Tab -->
+            <Tab text="Overdue Books">
+                <VBox alignment="TOP_CENTER" spacing="12">
+                    <padding><Insets bottom="28" left="28" right="28" top="16" /></padding>
+
+                    <!-- Info Header -->
+                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="info-box">
+                        <padding><Insets bottom="12" left="12" right="12" top="12" /></padding>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;"
+                               text="ℹ️ Students with Overdue Books" />
+                    </HBox>
+
+                    <!-- Overdue Students Table -->
+                    <TableView fx:id="overdueTable" prefHeight="450" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colStudentName" prefWidth="200.0" text="Student Name" />
+                            <TableColumn fx:id="colStudentEmail" prefWidth="250.0" text="Email" />
+                            <TableColumn fx:id="colOverdueBooks" prefWidth="150.0" text="Overdue Books" />
+                            <TableColumn fx:id="colMaxDaysOverdue" prefWidth="180.0" text="Max Days Overdue" />
+                        </columns>
+                    </TableView>
+
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+</BorderPane>

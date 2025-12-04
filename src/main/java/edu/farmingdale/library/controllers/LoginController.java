@@ -1,5 +1,6 @@
 package edu.farmingdale.library.controllers;
 
+import edu.farmingdale.library.model.Admin;
 import edu.farmingdale.library.model.Library;
 import edu.farmingdale.library.model.Student;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.CheckBox;
 
 public class LoginController {
 
@@ -20,9 +22,27 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private TextField visiblePasswordField;
     @FXML private ToggleButton toggleButton;
+    @FXML private CheckBox adminCheckBox;
     @FXML private Button loginButton;
     @FXML private Button signUpButton;
     @FXML private Label errorLabel;
+    @FXML private Label emailLabel;
+
+    @FXML
+    private void initialize() {
+        // Update label text when admin checkbox is toggled
+        if (adminCheckBox != null) {
+            adminCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal) {
+                    emailLabel.setText("Username:");
+                    emailField.setPromptText("Enter admin username");
+                } else {
+                    emailLabel.setText("Email:");
+                    emailField.setPromptText("Enter your email");
+                }
+            });
+        }
+    }
 
     @FXML
     private void toggle() {
@@ -48,26 +68,48 @@ public class LoginController {
     @FXML
     private void login() throws IOException {
         Library lib = Library.getInstance();
-        Student student = lib.getStudentByEmail(emailField.getText());
+        String credential = emailField.getText();
+        String password = getPasswordInput();
 
-        if(student != null && student.isPassword(getPasswordInput())) {
+        // Check if admin login
+        if (adminCheckBox != null && adminCheckBox.isSelected()) {
+            Admin admin = lib.getAdminByUsername(credential);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/library/student-homepage.fxml"));
-            Parent root = loader.load();
+            if (admin != null && admin.isPassword(password)) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/library/admin-homepage.fxml"));
+                Parent root = loader.load();
 
-            StudentHomeController controller = loader.getController();
-            controller.setStudent(student);
+                AdminHomeController controller = loader.getController();
+                controller.setAdmin(admin);
 
-            Scene scene = loginButton.getScene();
-            scene.setRoot(root);
+                Scene scene = loginButton.getScene();
+                scene.setRoot(root);
+            } else {
+                errorLabel.setText("Incorrect username or password");
+                errorLabel.setVisible(true);
+            }
         } else {
-            errorLabel.setText("Incorrect email or password");
-            errorLabel.setVisible(true);
+            // Student login
+            Student student = lib.getStudentByEmail(credential);
+
+            if (student != null && student.isPassword(password)) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/library/student-homepage.fxml"));
+                Parent root = loader.load();
+
+                StudentHomeController controller = loader.getController();
+                controller.setStudent(student);
+
+                Scene scene = loginButton.getScene();
+                scene.setRoot(root);
+            } else {
+                errorLabel.setText("Incorrect email or password");
+                errorLabel.setVisible(true);
+            }
         }
     }
 
     @FXML
-    private void updateCheck(){
+    private void updateCheck() {
         errorLabel.setVisible(false);
     }
 
@@ -83,7 +125,7 @@ public class LoginController {
 
     private void switchScene(String fxmlPath) throws IOException {
         Parent newRoot = FXMLLoader.load(getClass().getResource(fxmlPath));
-        Scene scene = loginButton.getScene(); // or any control in that screen
+        Scene scene = loginButton.getScene();
         scene.setRoot(newRoot);
     }
 

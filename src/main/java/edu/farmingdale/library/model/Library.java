@@ -13,34 +13,42 @@ import java.util.stream.Collectors;
 
 public class Library {
 
+    //instance for singleton class
     private static Library instance;
 
     private HashMap<Integer, Book> copiesById;
     private HashMap<String, Student> students;
-    private HashMap<Book, LocalDate> dueDates;
+    private HashMap<String, Admin> admins;
 
+    //Library Constructor is private so it can only be called internally (Singleton)
     private Library() {
         copiesById = new HashMap<>();
         students = new HashMap<>();
-        dueDates = new HashMap<>();
+        admins = new HashMap<>();
     }
 
+    //This is the public initialization. If instance null call constructor, if instance != null, call that instance
     public static Library getInstance() {
         if (instance == null) {
             instance = new Library();
-            instance.loadBooksFromCSV();
+            instance.loadBooksFromFirebase();
+            if (instance.copiesById.isEmpty()) {
+                instance.loadBooksFromCSV();
+            }
             instance.loadStudentsFromFirebase();
-            instance.syncBookAvailability(); // 🆕 Sync borrowed books
+            instance.loadAdminsFromFirebase();
+            instance.syncBookAvailability();
         }
         return instance;
     }
 
+    //Load CSV file of Books
     public void loadBooksFromCSV() {
         String path = "/edu/farmingdale/library/books.csv";
 
         try (Scanner scanner = new Scanner(Objects.requireNonNull(getClass().getResourceAsStream(path)))) {
 
-            if (scanner.hasNextLine()) scanner.nextLine(); // Skip header
+            if (scanner.hasNextLine()) scanner.nextLine();
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
@@ -61,13 +69,48 @@ public class Library {
                 addBookCopy(book);
             }
 
-            System.out.println("✅ Books loaded successfully.");
+            System.out.println("✅ Books loaded successfully from CSV.");
 
         } catch (Exception e) {
-            System.out.println("⚠️ Error loading books: " + e.getMessage());
+            System.out.println("⚠️ Error loading books from CSV: " + e.getMessage());
         }
     }
 
+    //Load Books from firebase
+    public void loadBooksFromFirebase() {
+        try {
+            Firestore db = FirebaseConfig.getDB();
+            ApiFuture<QuerySnapshot> future = db.collection("books").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            for (QueryDocumentSnapshot doc : documents) {
+                int id = doc.getLong("id").intValue();
+                String isbn = doc.getString("isbn");
+                String title = doc.getString("title");
+                String author = doc.getString("author");
+                Boolean inLibraryObj = doc.getBoolean("inLibrary");
+                boolean inLibrary = (inLibraryObj != null) ? inLibraryObj : true;
+
+                Book book = new Book(isbn, title, author, inLibrary, null);
+
+                // Load ratings if they exist
+                List<Long> ratings = (List<Long>) doc.get("ratings");
+                if (ratings != null) {
+                    for (Long rating : ratings) {
+                        book.addRating(rating.intValue());
+                    }
+                }
+
+                copiesById.put(id, book);
+            }
+
+            System.out.println("✅ Loaded " + copiesById.size() + " books from Firebase.");
+        } catch (Exception e) {
+            System.out.println("⚠️ Failed to load books from Firebase (will try CSV): " + e.getMessage());
+        }
+    }
+
+    //Load Students from Firebase
     public void loadStudentsFromFirebase() {
         try {
             Firestore db = FirebaseConfig.getDB();
@@ -85,14 +128,68 @@ public class Library {
         }
     }
 
-    // ====== STUDENT MANAGEMENT ======
+    //Load Admins from Firebase
+    public void loadAdminsFromFirebase() {
+        try {
+            Firestore db = FirebaseConfig.getDB();
+            ApiFuture<QuerySnapshot> future = db.collection("admins").get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            for (QueryDocumentSnapshot doc : documents) {
+                Admin a = doc.toObject(Admin.class);
+                admins.put(a.getUsername().toLowerCase(Locale.ROOT), a);
+            }
+
+            System.out.println("✅ Loaded " + admins.size() + " admins from Firebase.");
+
+            // Create default admin if none exists
+            if (admins.isEmpty()) {
+                Admin defaultAdmin = new Admin("admin", "Admin@123", "System Administrator");
+                addAdmin(defaultAdmin);
+                System.out.println("✅ Created default admin account (username: admin, password: Admin@123)");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Failed to load admins: " + e.getMessage());
+        }
+    }
+
+    // -------------------------------Admin Section---------------------------------------
+
+    public void addAdmin(Admin admin) {
+        admins.put(admin.getUsername().toLowerCase(Locale.ROOT), admin);
+        saveAdminToFirebase(admin);
+    }
+
+    private void saveAdminToFirebase(Admin admin) {
+        try {
+            Firestore db = FirebaseConfig.getDB();
+            ApiFuture<WriteResult> future = db.collection("admins")
+                    .document(admin.getUsername().toLowerCase(Locale.ROOT))
+                    .set(admin);
+
+            future.get();
+            System.out.println("✅ Admin saved to Firebase: " + admin.getUsername());
+
+        } catch (Exception e) {
+            System.out.println("❌ Failed to save admin to Firebase: " + e.getMessage());
+        }
+    }
+
+    public Admin getAdminByUsername(String username) {
+        return admins.get(username.toLowerCase(Locale.ROOT));
+    }
+
+    public boolean adminExists(String username) {
+        return admins.containsKey(username.toLowerCase(Locale.ROOT));
+    }
+
+    // -------------------------------Student Section---------------------------------------
 
     public void addStudent(Student student) {
         students.put(student.getEmail().toLowerCase(Locale.ROOT), student);
         saveStudentToFirebase(student);
     }
 
-    // 🆕 NEW: Save student to Firebase
     private void saveStudentToFirebase(Student student) {
         try {
             Firestore db = FirebaseConfig.getDB();
@@ -108,9 +205,8 @@ public class Library {
         }
     }
 
-    // 🆕 NEW: Update student in Firebase (called when borrowing/returning books)
     public void updateStudentInFirebase(Student student) {
-        saveStudentToFirebase(student); // Same method works for updates
+        saveStudentToFirebase(student);
     }
 
     public boolean emailExists(String email) {
@@ -121,7 +217,7 @@ public class Library {
         return students.get(email.toLowerCase(Locale.ROOT));
     }
 
-    // ====== STUDENT SORTING ======
+    // -------------------------------Student Sorting Section---------------------------------------
 
     public List<Student> getStudentsSortedByName() {
         return students.values().stream()
@@ -148,10 +244,66 @@ public class Library {
                 .collect(Collectors.toList());
     }
 
-    // ====== BOOK MANAGEMENT ======
+    // -------------------------------Book Section---------------------------------------
 
     public void addBookCopy(Book book) {
         copiesById.put(book.getID(), book);
+    }
+
+    // Admin adds a new book (saves to Firebase)
+    public void addNewBook(Book book) {
+        copiesById.put(book.getID(), book);
+        saveBookToFirebase(book);
+    }
+
+    public void updateBook(Book book) {
+        copiesById.put(book.getID(), book);
+        saveBookToFirebase(book);
+    }
+
+    public void deleteBook(int bookId) {
+        Book book = copiesById.remove(bookId);
+        if (book != null) {
+            deleteBookFromFirebase(bookId);
+        }
+    }
+
+    private void saveBookToFirebase(Book book) {
+        try {
+            Firestore db = FirebaseConfig.getDB();
+            Map<String, Object> bookData = new HashMap<>();
+            bookData.put("id", book.getID());
+            bookData.put("isbn", book.getISBN());
+            bookData.put("title", book.getBookTitle());
+            bookData.put("author", book.getAuthor());
+            bookData.put("inLibrary", book.getInLibrary());
+            bookData.put("ratings", book.getRatings());
+
+            ApiFuture<WriteResult> future = db.collection("books")
+                    .document(String.valueOf(book.getID()))
+                    .set(bookData);
+
+            future.get();
+            System.out.println("✅ Book saved to Firebase: " + book.getBookTitle());
+
+        } catch (Exception e) {
+            System.out.println("❌ Failed to save book to Firebase: " + e.getMessage());
+        }
+    }
+
+    private void deleteBookFromFirebase(int bookId) {
+        try {
+            Firestore db = FirebaseConfig.getDB();
+            ApiFuture<WriteResult> future = db.collection("books")
+                    .document(String.valueOf(bookId))
+                    .delete();
+
+            future.get();
+            System.out.println("✅ Book deleted from Firebase: " + bookId);
+
+        } catch (Exception e) {
+            System.out.println("❌ Failed to delete book from Firebase: " + e.getMessage());
+        }
     }
 
     public Book getBookByID(int id) {
@@ -171,7 +323,7 @@ public class Library {
         return null;
     }
 
-    // ====== BOOK SORTING ======
+    // -------------------------------Book Sorting Section---------------------------------------
 
     public List<Book> getBooksSortedByTitle() {
         return copiesById.values().stream()
@@ -191,7 +343,7 @@ public class Library {
                 .collect(Collectors.toList());
     }
 
-    // ====== BOOK SEARCHING ======
+    // -------------------------------Book Searching Section---------------------------------------
 
     public List<Book> searchByTitle(String title) {
         return copiesById.values().stream()
@@ -209,15 +361,40 @@ public class Library {
         return copiesById.get(id);
     }
 
-    // ====== DUE DATE TRACKING ======
+    // -------------------------------Due Date Section---------------------------------------
 
-    public void setDueDate(Book book, LocalDate date) {
-        dueDates.put(book, date);
+    public LocalDate getDueDate(Book book) {
+        // Get due date from the student who has the book
+        if (book.getPossesion() != null) {
+            return book.getPossesion().getDueDateForBook(book.getISBN());
+        }
+        return null;
     }
 
-    // 🆕 NEW: Sync book availability based on student borrowed books
+    public boolean isOverdue(Book book) {
+        LocalDate dueDate = getDueDate(book);
+        return dueDate != null && LocalDate.now().isAfter(dueDate);
+    }
+
+    public long getDaysOverdue(Book book) {
+        LocalDate dueDate = getDueDate(book);
+        if (dueDate == null || !LocalDate.now().isAfter(dueDate)) {
+            return 0;
+        }
+        return java.time.temporal.ChronoUnit.DAYS.between(dueDate, LocalDate.now());
+    }
+
+    public List<Student> getStudentsWithOverdueBooks() {
+        return students.values().stream()
+                .filter(student -> student.getCurrentBooks().stream()
+                        .anyMatch(isbn -> {
+                            Book book = getBookByIsbn(isbn);
+                            return book != null && isOverdue(book);
+                        }))
+                .collect(Collectors.toList());
+    }
+
     private void syncBookAvailability() {
-        // Mark all books borrowed by students as unavailable
         for (Student student : students.values()) {
             for (String isbn : student.getCurrentBooks()) {
                 Book book = getBookByIsbn(isbn);
@@ -229,9 +406,5 @@ public class Library {
             }
         }
         System.out.println("✅ Book availability synced with student records.");
-    }
-
-    public LocalDate getDueDate(Book book) {
-        return dueDates.get(book);
     }
 }

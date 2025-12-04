@@ -59,16 +59,52 @@
 
                     <TableView fx:id="availableBooksTable" prefHeight="420" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colAvailableID" prefWidth="100.0" text="ID" />
-                            <TableColumn fx:id="colAvailableTitle" prefWidth="250.0" text="Title" />
-                            <TableColumn fx:id="colAvailableAuthor" prefWidth="200.0" text="Author" />
-                            <TableColumn fx:id="colAvailableAction" prefWidth="170.0" text="Action" />
+                            <TableColumn fx:id="colAvailableID" prefWidth="80.0" text="ID" />
+                            <TableColumn fx:id="colAvailableTitle" prefWidth="220.0" text="Title" />
+                            <TableColumn fx:id="colAvailableAuthor" prefWidth="180.0" text="Author" />
+                            <TableColumn fx:id="colAvailableRating" prefWidth="150.0" text="Rating" />
+                            <TableColumn fx:id="colAvailableAction" prefWidth="120.0" text="Action" />
                         </columns>
                     </TableView>
 
                 </VBox>
             </Tab>
 
+            <!-- All Books Tab (with waitlist) -->
+            <Tab text="All Books">
+                <VBox alignment="TOP_CENTER" spacing="12">
+                    <padding><Insets bottom="28" left="28" right="28" top="16" /></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <Label style="-fx-font-weight: bold;" text="Search by:" />
+
+                        <ComboBox fx:id="searchTypeBoxAll" prefWidth="150">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Title" />
+                                    <String fx:value="Author" />
+                                    <String fx:value="ID" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <TextField fx:id="searchFieldAll" promptText="Enter search..." HBox.hgrow="ALWAYS" />
+                        <Button fx:id="searchButtonAll" onAction="#onSearchAll" styleClass="primary" text="Search" />
+                    </HBox>
+
+                    <TableView fx:id="allBooksTable" prefHeight="420" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colAllID" prefWidth="80.0" text="ID" />
+                            <TableColumn fx:id="colAllTitle" prefWidth="200.0" text="Title" />
+                            <TableColumn fx:id="colAllAuthor" prefWidth="160.0" text="Author" />
+                            <TableColumn fx:id="colAllRating" prefWidth="130.0" text="Rating" />
+                            <TableColumn fx:id="colAllStatus" prefWidth="100.0" text="Status" />
+                            <TableColumn fx:id="colAllAction" prefWidth="130.0" text="Action" />
+                        </columns>
+                    </TableView>
+
+                </VBox>
+            </Tab>
 
             <!-- My Books Tab -->
             <Tab text="My Books">
